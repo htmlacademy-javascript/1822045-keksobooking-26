@@ -1,7 +1,6 @@
 /* eslint-disable arrow-body-style */
 const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const CHECKIN = ['12:00', '13:00', '14:00'];
-const CHECKOUT = ['12:00', '13:00', '14:00'];
+const TIMES= ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
@@ -93,8 +92,8 @@ const rentOffer = () => {
       type: createElement(TYPE),
       rooms: createElement(ROOMS),
       guests: createElement(GUESTS),
-      checkin: createElement(CHECKIN),
-      checkout: createElement(CHECKOUT),
+      checkin: createElement(TIMES),
+      checkout: createElement(TIMES),
       features: createRandomArray(FEATURES),
       description: 'вы не захотите нас покидать',
       photos: createRandomArray(PHOTOS),
