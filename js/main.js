@@ -10,7 +10,7 @@ const PHOTOS = [
 ];
 const [LATITUDE_INITIAL_NUMBER, LATITUDE_FINAL_NUMBER] = [35.65000, 35.70000];
 const [LONGITUDE_INITIAL_NUMBER, LONGITUDE_FINAL_NUMBER] = [139.70000, 139.80000];
-
+const RENT_OFFER_COUNT = 10;
 
 const generateArray = (length, max) => (
   [...new Array(length)]
@@ -89,12 +89,12 @@ const rentOffer = () => {
     offer: {
       title: 'Отличный вариант для полосатых хвостов',
       address: `${latitude}, ${longitude},`,
-      price: PRICE[getRandomPositiveInteger(0, 1000)],
-      type: TYPE[getRandomPositiveInteger(0, TYPE.length - 1)],
-      rooms: ROOMS[getRandomPositiveInteger(0, 1000)],
-      guests: GUESTS[getRandomPositiveInteger(0, 1000)],
-      checkin: CHECKIN[getRandomPositiveInteger(0, CHECKIN.length - 1)],
-      checkout: CHECKOUT[getRandomPositiveInteger(0, CHECKOUT.length - 1)],
+      price: createElement(PRICE),
+      type: createElement(TYPE),
+      rooms: createElement(ROOMS),
+      guests: createElement(GUESTS),
+      checkin: createElement(CHECKIN),
+      checkout: createElement(CHECKOUT),
       features: createRandomArray(FEATURES),
       description: 'вы не захотите нас покидать',
       photos: createRandomArray(PHOTOS),
@@ -106,5 +106,5 @@ const rentOffer = () => {
   });
 };
 
-const offers = Array.from({length: 10},  rentOffer);
+const offers = Array.from({length: RENT_OFFER_COUNT},  rentOffer);
 offers.join();
