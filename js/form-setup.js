@@ -69,10 +69,11 @@ pristine.addValidator(
   validateCapacity);
 
 form.addEventListener('change', (evt) => {
-  form.timein.value = evt.target.value;
-  form.timeout.value = evt.target.value;
+  if (evt.target.matches('#timein', '#timeout')) {
+    form.timein.value = evt.target.value;
+    form.timeout.value = evt.target.value;
+  }
 });
-
 
 form.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
