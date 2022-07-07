@@ -3,6 +3,9 @@ const typeElement = form.querySelector('#type');
 const priceElement = form.querySelector('#price');
 const roomNumberElement = form.querySelector('#room_number');
 const capacityElement = form.querySelector('#capacity');
+const addFormElements = form.querySelectorAll('fieldset');
+const mapFiltersForm = document.querySelector('.map__filters');
+const mapFiltersFormElements = mapFiltersForm.querySelectorAll('select', 'fieldset');
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
@@ -22,13 +25,25 @@ const CAPACITY_OPTION = {
 };
 
 const pristine = new Pristine(form, {
-  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
-  errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
-  successClass: 'ad-form__element--valid', // Класс, обозначающий валидное поле
-  errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
-  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
-  errorTextClass: 'ad-form__error--text' // Класс для элемента с текстом ошибки
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  successClass: 'ad-form__element--valid',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__error--text',
 });
+
+const getFormDisabled = () => {
+  form.classList.add('ad-form--disabled');
+  addFormElements.forEach((fieldset) => {
+    fieldset.setAttribute('disabled', 'true');
+  });
+
+  mapFiltersForm.classList.add('map__filters--disabled');
+  mapFiltersFormElements.forEach((element) => {
+    element.setAttribute('disabled', 'true');
+  });
+};
 
 const validateTitle = (value) => value.length >= MIN_TITLE_LENGTH && value.length <= MAX_TITLE_LENGTH;
 
@@ -81,3 +96,4 @@ form.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
+
