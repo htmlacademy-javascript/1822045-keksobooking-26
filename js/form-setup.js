@@ -1,8 +1,13 @@
 const form = document.querySelector('.ad-form');
 const typeElement = form.querySelector('#type');
+const typeSelectedElement = typeElement.querySelector('option:checked');
 const priceElement = form.querySelector('#price');
 const roomNumberElement = form.querySelector('#room_number');
 const capacityElement = form.querySelector('#capacity');
+const addFormElements = form.querySelectorAll('fieldset');
+const mapFiltersForm = document.querySelector('.map__filters');
+const mapFiltersFormElements = mapFiltersForm.querySelectorAll('select', 'fieldset');
+const addressElement = form.querySelector('#address');
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
@@ -21,13 +26,37 @@ const CAPACITY_OPTION = {
   '100': ['0'],
 };
 
+const getFormDisabled = () => {
+  form.classList.add('ad-form--disabled');
+  addFormElements.forEach((fieldset) => {
+    fieldset.setAttribute('disabled', 'true');
+  });
+
+  mapFiltersForm.classList.add('map__filters--disabled');
+  mapFiltersFormElements.forEach((element) => {
+    element.setAttribute('disabled', 'true');
+  });
+};
+
+const getFormUnabled = () => {
+  form.classList.remove('ad-form--disabled');
+  addFormElements.forEach((fieldset) => {
+    fieldset.removeAttribute('disabled', 'true');
+  });
+
+  mapFiltersForm.classList.remove('map__filters--disabled');
+  mapFiltersFormElements.forEach((element) => {
+    element.removeAttribute('disabled', 'true');
+  });
+};
+
 const pristine = new Pristine(form, {
-  classTo: 'ad-form__element', // Элемент, на который будут добавляться классы
-  errorClass: 'ad-form__element--invalid', // Класс, обозначающий невалидное поле
-  successClass: 'ad-form__element--valid', // Класс, обозначающий валидное поле
-  errorTextParent: 'ad-form__element', // Элемент, куда будет выводиться текст с ошибкой
-  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
-  errorTextClass: 'ad-form__error--text' // Класс для элемента с текстом ошибки
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  successClass: 'ad-form__element--valid',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__error--text',
 });
 
 const validateTitle = (value) => value.length >= MIN_TITLE_LENGTH && value.length <= MAX_TITLE_LENGTH;
@@ -38,17 +67,13 @@ pristine.addValidator(
   'Обязательное поле от 30 до 100 символов');
 
 typeElement.addEventListener('change', () => {
-  const typeSelectedElement = typeElement.querySelector('option:checked');
   priceElement.placeholder = TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
 });
 
-const validatePrice =  () => {
-  const typeSelectedElement = typeElement.querySelector('option:checked');
-  return priceElement.value >= TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
-};
+const validatePrice =  () => priceElement.value >= TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
 
 const getValidatePriceErrorMessage = () => {
-  const typeSelectedElement = typeElement.querySelector('option:checked');
+  typeSelectedElement = typeElement.querySelector('option:checked');
   return `Минимальная стоимость за выбранный тип проживания от ${TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value]}`;
 };
 
@@ -81,3 +106,46 @@ form.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
+
+const sliderElement = document.querySelector('.ad-form__slider');
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 0,
+  step: 100,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    }
+  }
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  priceElement.value = sliderElement.noUiSlider.get();
+});
+
+typeElement.addEventListener('change', (evt) => {
+
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value],
+      max: 100000,
+    },
+  });
+  sliderElement.noUiSlider.set(TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value]);
+});
+
+priceElement.addEventListener('change', (evt) => {
+  sliderElement.noUiSlider.set(priceElement.value);
+});
+
+export {getFormDisabled};
+export {getFormUnabled};
+export {addressElement};

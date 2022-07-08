@@ -1,7 +1,6 @@
 import {createOffers} from './data.js';
 
 const similarCardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const similarCardList = document.querySelector('#map-canvas');
 
 const similarCards = createOffers();
 const offerListFragment = document.createDocumentFragment();
@@ -95,4 +94,4 @@ similarCards.forEach((card) => {
   offerListFragment.appendChild(cardElement);
 });
 
-similarCardList.append(offerListFragment);
+export {similarCards};
