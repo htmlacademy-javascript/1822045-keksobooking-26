@@ -1,6 +1,5 @@
 const form = document.querySelector('.ad-form');
 const typeElement = form.querySelector('#type');
-const typeSelectedElement = typeElement.querySelector('option:checked');
 const priceElement = form.querySelector('#price');
 const roomNumberElement = form.querySelector('#room_number');
 const capacityElement = form.querySelector('#capacity');
@@ -8,6 +7,7 @@ const addFormElements = form.querySelectorAll('fieldset');
 const mapFiltersForm = document.querySelector('.map__filters');
 const mapFiltersFormElements = mapFiltersForm.querySelectorAll('select', 'fieldset');
 const addressElement = form.querySelector('#address');
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
@@ -67,13 +67,17 @@ pristine.addValidator(
   'Обязательное поле от 30 до 100 символов');
 
 typeElement.addEventListener('change', () => {
+  const typeSelectedElement = typeElement.querySelector('option:checked');
   priceElement.placeholder = TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
 });
 
-const validatePrice =  () => priceElement.value >= TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
+const validatePrice =  () => {
+  const typeSelectedElement = typeElement.querySelector('option:checked');
+  return priceElement.value >= TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
+};
 
 const getValidatePriceErrorMessage = () => {
-  typeSelectedElement = typeElement.querySelector('option:checked');
+  const typeSelectedElement = typeElement.querySelector('option:checked');
   return `Минимальная стоимость за выбранный тип проживания от ${TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value]}`;
 };
 
@@ -107,6 +111,7 @@ form.addEventListener('submit', (evt) => {
   }
 });
 
+
 const sliderElement = document.querySelector('.ad-form__slider');
 
 noUiSlider.create(sliderElement, {
@@ -132,19 +137,20 @@ sliderElement.noUiSlider.on('update', () => {
 });
 
 typeElement.addEventListener('change', (evt) => {
-
+  const typeSelectedElement = typeElement.querySelector('option:checked');
   sliderElement.noUiSlider.updateOptions({
     range: {
-      min: TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value],
+      min: 0,
       max: 100000,
     },
+    start: TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value],
   });
-  sliderElement.noUiSlider.set(TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value]);
 });
 
 priceElement.addEventListener('change', (evt) => {
   sliderElement.noUiSlider.set(priceElement.value);
 });
+
 
 export {getFormDisabled};
 export {getFormUnabled};

@@ -46,11 +46,12 @@ const mainMarker = L.marker(
 mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
-  addressElement.value = evt.target.getLatLng();
-  addressElement.value.toFixed(5);
+  const {lat, lng} = evt.target.getLatLng();
+  addressElement.value =`Координаты широта ${lat.toFixed(5)} и долгота ${lng.toFixed(5)}`;
 });
 
-const CardPopupElements = document.querySelectorAll('.popup');
+const сardPopupElements = document.querySelectorAll('.popup');
+сardPopupElements.textContent = similarCards[0];
 
 const createMarkers = (lat, lng, index) => {
   const marker = L.marker(
@@ -65,9 +66,10 @@ const createMarkers = (lat, lng, index) => {
 
   marker
     .addTo(map)
-    .bindPopup(CardPopupElements[index]);
+    .bindPopup(сardPopupElements[index]);
 };
 
 similarCards.slice(0, 10).forEach((element, index) => {
   createMarkers(element.location.lat, element.location.lng, index);
 });
+

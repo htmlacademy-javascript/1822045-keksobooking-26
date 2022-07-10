@@ -1,14 +1,14 @@
 import {createOffers} from './data.js';
 
 const similarCardTemplate = document.querySelector('#card').content.querySelector('.popup');
-
+const similarCardList = document.querySelector('#map-canvas');
 const similarCards = createOffers();
 const offerListFragment = document.createDocumentFragment();
 const CURRENCY = ' ₽/ночь';
 const ROOMS_FOR = ' комнаты для ';
 const PEOPLE = ' гостей';
 const CHECKIN_TEXT = 'Заезд после ';
-const CHECKOUT_TEXT = ' выезд после';
+const CHECKOUT_TEXT = ' выезд после ';
 
 similarCards.forEach((card) => {
   const cardElement = similarCardTemplate.cloneNode(true);
@@ -92,6 +92,9 @@ similarCards.forEach((card) => {
   }
 
   offerListFragment.appendChild(cardElement);
+
 });
+
+similarCardList.append(offerListFragment);
 
 export {similarCards};
