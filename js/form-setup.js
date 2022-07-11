@@ -6,6 +6,7 @@ const capacityElement = form.querySelector('#capacity');
 const addFormElements = form.querySelectorAll('fieldset');
 const mapFiltersForm = document.querySelector('.map__filters');
 const mapFiltersFormElements = mapFiltersForm.querySelectorAll('select', 'fieldset');
+const addressElement = form.querySelector('#address');
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
@@ -24,15 +25,7 @@ const CAPACITY_OPTION = {
   '100': ['0'],
 };
 
-const pristine = new Pristine(form, {
-  classTo: 'ad-form__element',
-  errorClass: 'ad-form__element--invalid',
-  successClass: 'ad-form__element--valid',
-  errorTextParent: 'ad-form__element',
-  errorTextTag: 'span',
-  errorTextClass: 'ad-form__error--text',
-});
-
+// Формы активации - деактивации
 const getFormDisabled = () => {
   form.classList.add('ad-form--disabled');
   addFormElements.forEach((fieldset) => {
@@ -44,6 +37,67 @@ const getFormDisabled = () => {
     element.setAttribute('disabled', 'true');
   });
 };
+
+const getFormUnabled = () => {
+  form.classList.remove('ad-form--disabled');
+  addFormElements.forEach((fieldset) => {
+    fieldset.removeAttribute('disabled', 'true');
+  });
+
+  mapFiltersForm.classList.remove('map__filters--disabled');
+  mapFiltersFormElements.forEach((element) => {
+    element.removeAttribute('disabled', 'true');
+  });
+};
+
+// Слайдер
+const sliderElement = document.querySelector('.ad-form__slider');
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 0,
+  step: 100,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    }
+  }
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  priceElement.value = sliderElement.noUiSlider.get();
+});
+
+typeElement.addEventListener('change', () => {
+  const typeSelectedElement = typeElement.querySelector('option:checked');
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: 0,
+      max: 100000,
+    },
+  });
+  sliderElement.noUiSlider.set(TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value]);
+});
+
+priceElement.addEventListener('change', () => {
+  sliderElement.noUiSlider.set(priceElement.value);
+});
+
+const pristine = new Pristine(form, {
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  successClass: 'ad-form__element--valid',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'span',
+  errorTextClass: 'ad-form__error--text',
+});
 
 const validateTitle = (value) => value.length >= MIN_TITLE_LENGTH && value.length <= MAX_TITLE_LENGTH;
 
@@ -97,3 +151,6 @@ form.addEventListener('submit', (evt) => {
   }
 });
 
+export {getFormDisabled};
+export {getFormUnabled};
+export {addressElement};
