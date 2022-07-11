@@ -34,8 +34,8 @@ L.tileLayer(
 
 const mainMarker = L.marker(
   {
-    lat:35.68950,
-    lng:139.69171,
+    lat: MAIN_LAT,
+    lng: MAIN_LNG,
   },
   {
     draggable: true,
@@ -47,11 +47,11 @@ mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
   const {lat, lng} = evt.target.getLatLng();
-  addressElement.value =`Координаты широта ${lat.toFixed(5)} и долгота ${lng.toFixed(5)}`;
+  addressElement.value =`широта ${lat.toFixed(5)} и долгота ${lng.toFixed(5)}`;
 });
 
-const сardPopupElements = document.querySelectorAll('.popup');
-сardPopupElements.textContent = similarCards[0];
+const cardPopupElements = document.querySelectorAll('.popup');
+cardPopupElements.textContent = similarCards[0];
 
 const createMarkers = (lat, lng, index) => {
   const marker = L.marker(
@@ -66,7 +66,7 @@ const createMarkers = (lat, lng, index) => {
 
   marker
     .addTo(map)
-    .bindPopup(сardPopupElements[index]);
+    .bindPopup(cardPopupElements[index]);
 };
 
 similarCards.slice(0, 10).forEach((element, index) => {

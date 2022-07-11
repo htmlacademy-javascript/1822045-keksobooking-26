@@ -1,6 +1,5 @@
 const form = document.querySelector('.ad-form');
 const typeElement = form.querySelector('#type');
-const typeSelectedElement = typeElement.querySelector('option:checked');
 const priceElement = form.querySelector('#price');
 const roomNumberElement = form.querySelector('#room_number');
 const capacityElement = form.querySelector('#capacity');
@@ -76,8 +75,8 @@ sliderElement.noUiSlider.on('update', () => {
   priceElement.value = sliderElement.noUiSlider.get();
 });
 
-typeElement.addEventListener('change', (evt) => {
-
+typeElement.addEventListener('change', () => {
+  const typeSelectedElement = typeElement.querySelector('option:checked');
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: 0,
@@ -87,7 +86,7 @@ typeElement.addEventListener('change', (evt) => {
   sliderElement.noUiSlider.set(TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value]);
 });
 
-priceElement.addEventListener('change', (evt) => {
+priceElement.addEventListener('change', () => {
   sliderElement.noUiSlider.set(priceElement.value);
 });
 
@@ -108,10 +107,14 @@ pristine.addValidator(
   'Обязательное поле от 30 до 100 символов');
 
 typeElement.addEventListener('change', () => {
+  const typeSelectedElement = typeElement.querySelector('option:checked');
   priceElement.placeholder = TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
 });
 
-const validatePrice =  () => priceElement.value >= TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
+const validatePrice =  () => {
+  const typeSelectedElement = typeElement.querySelector('option:checked');
+  return priceElement.value >= TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
+};
 
 const getValidatePriceErrorMessage = () => {
   const typeSelectedElement = typeElement.querySelector('option:checked');
