@@ -3,3 +3,4 @@ import './utils.js';
 import './popup.js';
 import './form-setup.js';
 import './map-setup.js';
+import './server-connection.js';

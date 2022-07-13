@@ -1,7 +1,7 @@
 import { getFormDisabled } from './form-setup.js';
 import { getFormUnabled } from './form-setup.js';
 import {addressElement} from './form-setup.js';
-import { similarCards } from './popup.js';
+// import { similarCards } from './popup.js';
 
 const [MAIN_LAT, MAIN_LNG] = [35.68950, 139.69171];
 const MAP_ZOOM = 13;
@@ -50,26 +50,28 @@ mainMarker.on('moveend', (evt) => {
   addressElement.value =`широта ${lat.toFixed(5)} и долгота ${lng.toFixed(5)}`;
 });
 
-const cardPopupElements = document.querySelectorAll('.popup');
-cardPopupElements.textContent = similarCards[0];
+// const cardPopupElements = document.querySelectorAll('.popup');
+// cardPopupElements.textContent = similarCards[0];
 
-const createMarkers = (lat, lng, index) => {
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon,
-    },
-  );
+// const createMarkers = (lat, lng, index) => {
+//   const marker = L.marker(
+//     {
+//       lat,
+//       lng,
+//     },
+//     {
+//       icon,
+//     },
+//   );
 
-  marker
-    .addTo(map)
-    .bindPopup(cardPopupElements[index]);
-};
+//   marker
+//     .addTo(map)
+//     .bindPopup(cardPopupElements[index]);
+// };
 
-similarCards.slice(0, 10).forEach((element, index) => {
-  createMarkers(element.location.lat, element.location.lng, index);
-});
+// similarCards.slice(0, 10).forEach((element, index) => {
+//   createMarkers(element.location.lat, element.location.lng, index);
+// });
 
+export {map};
+export {icon};
