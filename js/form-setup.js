@@ -161,7 +161,7 @@ const unblockSubmitButton = () => {
 
 // Форма отправки объявления
 
-const offerFormSubmit = (onSuccess) => {
+const offerFormSubmit = () => {
   form.addEventListener('submit', (evt) => {
     const isValid = pristine.validate();
     if (!isValid) {
