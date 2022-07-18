@@ -1,4 +1,7 @@
+import { showFormErrorMessage, showFormSuccessMessage } from './utils.js';
+
 const form = document.querySelector('.ad-form');
+const submitButton = form.querySelector('.ad-form__submit');
 const typeElement = form.querySelector('#type');
 const priceElement = form.querySelector('#price');
 const roomNumberElement = form.querySelector('#room_number');
@@ -144,13 +147,55 @@ form.addEventListener('change', (evt) => {
   }
 });
 
-form.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
-  if (!isValid) {
-    evt.preventDefault();
-  }
-});
+// Блокировка и разблокировка кнопки отправки
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+// Форма отправки объявления
+
+const offerFormSubmit = () => {
+  form.addEventListener('submit', (evt) => {
+    const isValid = pristine.validate();
+    if (!isValid) {
+      evt.preventDefault();
+    }
+
+    if (isValid) {
+      evt.preventDefault();
+      const formData = new FormData(evt.target);
+      blockSubmitButton();
+      fetch(
+        'https://26.javascript.pages.academy/keksobooking',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+        .then((response) => {
+          if (response.ok) {
+            showFormSuccessMessage();
+            unblockSubmitButton();
+          } else {
+            showFormErrorMessage();
+          }
+        })
+        .catch(() => {
+          showFormErrorMessage();
+          unblockSubmitButton();
+        });
+    }
+  });
+};
 
 export {getFormDisabled};
 export {getFormUnabled};
 export {addressElement};
+export {offerFormSubmit};
