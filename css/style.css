@@ -1038,3 +1038,25 @@ fieldset {
 .hidden {
   display: none;
 }
+
+.connection-error__message {
+  background-color: #fce4e4;
+  border: 1px solid #fcc2c3;
+  float: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 20px 30px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.connection-error__text {
+  color: #cc0033;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 20px;
+  text-shadow: 1px 1px rgba(250,250,250,.3);
+}
