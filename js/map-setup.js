@@ -4,6 +4,7 @@ import {addressElement} from './form-setup.js';
 
 const [MAIN_LAT, MAIN_LNG] = [35.68950, 139.69171];
 const MAP_ZOOM = 13;
+addressElement.value = `${MAIN_LAT}, ${MAIN_LNG}`;
 
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -46,7 +47,7 @@ mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
   const {lat, lng} = evt.target.getLatLng();
-  addressElement.value =`широта ${lat.toFixed(5)} и долгота ${lng.toFixed(5)}`;
+  addressElement.value =`${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
 export {map};
