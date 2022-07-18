@@ -181,7 +181,6 @@ const offerFormSubmit = (onSuccess) => {
       )
         .then((response) => {
           if (response.ok) {
-            onSuccess();
             showFormSuccessMessage();
             unblockSubmitButton();
           } else {
