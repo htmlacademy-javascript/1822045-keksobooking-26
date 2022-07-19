@@ -35,8 +35,8 @@
             <option value="palace">Дворец</option>
           </select>
           <select name="housing-price" id="housing-price" class="map__filter">
-            <option value="any" selected>Любая</option>
-            <option value="middle">10000 - 50000&#x20bd;</option>
+            <option value="any">Любая</option>
+            <option value="middle" selected>10000 - 50000&#x20bd;</option>
             <option value="low">до 10000&#x20bd;</option>
             <option value="high">от 50000&#x20bd;</option>
           </select>
@@ -110,7 +110,7 @@
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-          <input id="price" name="price" type="number" placeholder="5000" required>
+          <input id="price" name="price" type="number" placeholder="5000" required data-pristine-required-message="Обязательное поле">
           <div class="ad-form__slider">
           </div>
         </fieldset>

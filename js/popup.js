@@ -1,8 +1,8 @@
 import {map} from './map-setup.js';
 import {icon} from './map-setup.js';
 
-// const DEFAULT = {type: 'flat'};
-// const OFFERS_COUNT = 10;
+const DEFAULT = {type: 'flat'};
+const OFFERS_COUNT = 10;
 const similarCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 const similarCardList = document.querySelector('#card');
 const CURRENCY = ' ₽/ночь';
@@ -10,38 +10,51 @@ const ROOMS_FOR = ' комнаты для ';
 const PEOPLE = ' гостей';
 const CHECKIN_TEXT = 'Заезд после ';
 const CHECKOUT_TEXT = ' выезд после ';
-
-// const getOfferRank = (offer) => {
-//   const housingTypeElement = document.querySelector('[name="housing-type"]');
-//   const housingTypeSelectedElement = housingTypeElement.querySelector('option:checked');
-//   let rank = 0;
-
-//   if (offer.type === (housingTypeSelectedElement.value || DEFAULT.type)) {
-//     rank += 2;
-//   }
-//   return rank;
+const mapFiltersFormElement = document.querySelector('.map__filters');
+// const priceOptions = {
+//   any: [0],
+//   middle: [10000, 50000],
+//   low: [10000],
+//   high: [50000]
 // };
+
+const getOfferRank = (offer) => {
+  const housingTypeElement = document.querySelector('[name="housing-type"]');
+  const housingTypeSelectedElement = housingTypeElement.querySelector('option:checked');
+  // const priceElement = document.querySelector('[name="housing-price"]');
+  // const priceSelectedElement = priceElement.querySelector('option:checked');
+
+  let rank = 0;
+
+  if (offer.offer.type === (housingTypeSelectedElement.value || DEFAULT.type)) {
+    rank += 2;
+  }
+
+  return rank;
+};
 
 // Функция сортировки
 
-// const compareOffers = (offerA, offerB) => {
-//   const rankA = getOfferRank(offerA);
-//   const rankB = getOfferRank(offerB);
+const compareOffers = (offerA, offerB) => {
+  const rankA = getOfferRank(offerA);
+  const rankB = getOfferRank(offerB);
 
-//   return rankB - rankA;
-// };
+  return rankB - rankA;
+};
 
-// const setMapFilters = (cb) => {
-//   HOUSING_TYPE_FILTER.addEventListener('change', cb);
-// };
+const setMapFilters = (cb) => {
+  mapFiltersFormElement.addEventListener('change', () => {
+    cb();
+  });
+};
 
 
 const renderSimilarCardsList = (similarCards) => {
   const offerListFragment = document.createDocumentFragment();
   similarCards
-    // .slice()x
-    // .sort(compareOffers)
-    // .slice(0, OFFERS_COUNT)
+    .slice()
+    .sort(compareOffers)
+    .slice(0, OFFERS_COUNT)
     .forEach((card) => {
       const cardElement = similarCardTemplate.cloneNode(true);
       cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -164,4 +177,4 @@ const renderSimilarCardsList = (similarCards) => {
 };
 
 export {renderSimilarCardsList};
-// export {setMapFilters};
+export {setMapFilters};
