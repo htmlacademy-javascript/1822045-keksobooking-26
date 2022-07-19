@@ -2,7 +2,7 @@ import { getFormDisabled } from './form-setup.js';
 import { getFormUnabled } from './form-setup.js';
 import {addressElement} from './form-setup.js';
 
-const [MAIN_LAT, MAIN_LNG] = [35.68950, 139.69171];
+const [MAIN_LAT, MAIN_LNG] = [35.68951, 139.69171];
 const MAP_ZOOM = 13;
 addressElement.value = `${MAIN_LAT}, ${MAIN_LNG}`;
 

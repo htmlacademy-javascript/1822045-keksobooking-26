@@ -74,6 +74,8 @@ noUiSlider.create(sliderElement, {
   }
 });
 
+// Слайдер
+
 sliderElement.noUiSlider.on('update', () => {
   priceElement.value = sliderElement.noUiSlider.get();
 });

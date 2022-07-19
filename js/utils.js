@@ -52,11 +52,15 @@ const createRandomArray = (elements) => {
   return newArray;
 };
 
+// Сообщение об ошибке загрузки данных с сервера
+
 const showConnectErrorMessage = (message) => {
   const connectErrorMessage = document.querySelector('#connection-error').content.querySelector('.connection-error__message');
   connectErrorMessage.textContent = message;
   document.body.append(connectErrorMessage);
 };
+
+//  Сообщение об ошибке загрузки объявления
 
 const showFormErrorMessage = () => {
   const formErrorMessage = document.querySelector('#error').content;
@@ -82,20 +86,25 @@ const showFormErrorMessage = () => {
   document.body.append(formErrorMessage);
 };
 
+// Сообщение об успешной загрузке объявления
+
 const showFormSuccessMessage = () => {
   const formSuccessMessage = document.querySelector('#success').content;
 
+  const removeSuccessMessage = () => {
+    const formSuccessMessageContainer = document.querySelector('.success');
+    if (formSuccessMessageContainer) {
+      formSuccessMessageContainer.remove();
+    }
+  };
+
   document.addEventListener('keydown', () => {
     if (isEscapeKey) {
-      const formSuccessMessageContainer = document.querySelector('.success');
-      formSuccessMessageContainer.remove('success');
+      removeSuccessMessage();
     }
   });
 
-  document.addEventListener('click', () => {
-    const formSuccessMessageContainer = document.querySelector('.success');
-    formSuccessMessageContainer.remove('success');
-  });
+  document.addEventListener('click', removeSuccessMessage);
 
   document.body.append(formSuccessMessage);
 };
