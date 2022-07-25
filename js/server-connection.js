@@ -1,6 +1,6 @@
 import { showConnectErrorMessage } from './utils.js';
 
-const getData = (onSuccess) => {
+const getOffersData = (onSuccess) => {
   fetch('https://26.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((offers) => {
@@ -11,5 +11,19 @@ const getData = (onSuccess) => {
     });
 };
 
+const sendFormData = (onSuccess, onFail, body) => {
+  fetch(
+    'https://26.javascript.pages.academy/keksobooking',
+    {
+      method: 'POST',
+      body,
+    },
+  )
+    .then((response) => response.ok ? onSuccess() : onFail('Данные не отправлены, попробуйте еще раз'))
+    .catch(() => {
+      onFail('Данные не отправлены, попробуйте еще раз');
+    });
+};
 
-export {getData};
+export {getOffersData};
+export {sendFormData};

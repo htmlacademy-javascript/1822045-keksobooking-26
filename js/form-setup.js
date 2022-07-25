@@ -1,4 +1,8 @@
 import { showFormErrorMessage, showFormSuccessMessage } from './utils.js';
+import { setMapInitPosition } from './map-setup.js';
+import { getPhotosCleared } from './avatar.js';
+import { sendFormData } from './server-connection.js';
+import { setFilter } from './filters-setup.js';
 
 const form = document.querySelector('.ad-form');
 const submitButton = form.querySelector('.ad-form__submit');
@@ -161,43 +165,50 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
+
 // Форма отправки объявления
 
-const offerFormSubmit = () => {
-  form.addEventListener('submit', (evt) => {
-    const isValid = pristine.validate();
-    if (!isValid) {
-      evt.preventDefault();
-    }
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
 
-    if (isValid) {
-      evt.preventDefault();
-      const formData = new FormData(evt.target);
-      blockSubmitButton();
-      fetch(
-        'https://26.javascript.pages.academy/keksobooking',
-        {
-          method: 'POST',
-          body: formData,
-        },
-      )
-        .then((response) => {
-          if (response.ok) {
-            showFormSuccessMessage();
-            unblockSubmitButton();
-          } else {
-            showFormErrorMessage();
-          }
-        })
-        .catch(() => {
-          showFormErrorMessage();
-          unblockSubmitButton();
-        });
-    }
+  const isValid = pristine.validate();
+
+  if (!isValid) {
+    evt.preventDefault();
+  }
+
+  if (isValid) {
+    blockSubmitButton();
+    const formData = new FormData(evt.target);
+    sendFormData(
+      () => {
+        showFormSuccessMessage();
+        mapFiltersForm.reset();
+        form.reset();
+        unblockSubmitButton();
+        getPhotosCleared();
+        setMapInitPosition();
+      },
+      () =>  {
+        showFormErrorMessage();
+        unblockSubmitButton();
+      },
+      formData,
+    );
+  } else {
+    showFormErrorMessage();
+  }
+});
+
+form.addEventListener('reset', ()=> {
+  getPhotosCleared();
+  mapFiltersForm.reset();
+  setTimeout(() => {
+    setMapInitPosition();
+    setFilter();
   });
-};
+});
 
 export {getFormDisabled};
 export {getFormUnabled};
 export {addressElement};
-export {offerFormSubmit};

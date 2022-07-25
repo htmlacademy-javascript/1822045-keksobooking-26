@@ -88,25 +88,27 @@ const showFormErrorMessage = () => {
 
 // Сообщение об успешной загрузке объявления
 
-const showFormSuccessMessage = () => {
-  const formSuccessMessage = document.querySelector('#success').content;
+const formSuccessMessage = document.querySelector('#success').content.querySelector('.success');
+const formSuccessMessageContainer = formSuccessMessage.cloneNode(true);
 
-  const removeSuccessMessage = () => {
-    const formSuccessMessageContainer = document.querySelector('.success');
-    if (formSuccessMessageContainer) {
-      formSuccessMessageContainer.remove();
-    }
+const showFormSuccessMessage = () => document.body.append(formSuccessMessageContainer);
+
+const removeFormSuccessMessage = () => formSuccessMessageContainer.remove();
+
+document.addEventListener('click', removeFormSuccessMessage);
+
+document.addEventListener('keydown', () => {
+  if (isEscapeKey) {
+    removeFormSuccessMessage();
+  }
+});
+
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-
-  document.addEventListener('keydown', () => {
-    if (isEscapeKey) {
-      removeSuccessMessage();
-    }
-  });
-
-  document.addEventListener('click', removeSuccessMessage);
-
-  document.body.append(formSuccessMessage);
 };
 
 export {generateArray};
@@ -117,4 +119,4 @@ export {createElement};
 export {showConnectErrorMessage};
 export {showFormErrorMessage};
 export {showFormSuccessMessage};
-
+export {debounce};
