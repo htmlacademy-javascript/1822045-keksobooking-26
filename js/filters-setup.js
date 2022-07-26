@@ -1,5 +1,4 @@
 import {getOffersData} from './server-connection.js';
-// import {showAlert} from './util.js';
 import {getOffersPoints} from './map-setup.js';
 import {debounce} from './utils.js';
 
