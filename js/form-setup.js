@@ -16,6 +16,8 @@ const mapFiltersFormElements = mapFiltersForm.querySelectorAll('select', 'fields
 const addressElement = form.querySelector('#address');
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
+const sliderElement = document.querySelector('.ad-form__slider');
+
 
 const TYPE_ELEMENTS_MINCOST_LIST = {
   bungalow: 0,
@@ -43,6 +45,8 @@ const getFormDisabled = () => {
   mapFiltersFormElements.forEach((element) => {
     element.setAttribute('disabled', 'true');
   });
+
+  sliderElement.setAttribute('disabled', true);
 };
 
 const getFormUnabled = () => {
@@ -55,10 +59,12 @@ const getFormUnabled = () => {
   mapFiltersFormElements.forEach((element) => {
     element.removeAttribute('disabled', 'true');
   });
+
+  sliderElement.removeAttribute('disabled', true);
+
 };
 
 // Слайдер
-const sliderElement = document.querySelector('.ad-form__slider');
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -98,6 +104,8 @@ typeElement.addEventListener('change', () => {
 priceElement.addEventListener('change', () => {
   sliderElement.noUiSlider.set(priceElement.value);
 });
+
+//  Валидация
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
@@ -173,10 +181,6 @@ form.addEventListener('submit', (evt) => {
 
   const isValid = pristine.validate();
 
-  if (!isValid) {
-    evt.preventDefault();
-  }
-
   if (isValid) {
     blockSubmitButton();
     const formData = new FormData(evt.target);
@@ -195,8 +199,6 @@ form.addEventListener('submit', (evt) => {
       },
       formData,
     );
-  } else {
-    showFormErrorMessage();
   }
 });
 
