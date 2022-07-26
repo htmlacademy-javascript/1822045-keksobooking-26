@@ -52,15 +52,15 @@ const getFormDisabled = () => {
 const getFormUnabled = () => {
   form.classList.remove('ad-form--disabled');
   addFormElements.forEach((fieldset) => {
-    fieldset.removeAttribute('disabled', 'true');
+    fieldset.removeAttribute('disabled');
   });
 
   mapFiltersForm.classList.remove('map__filters--disabled');
   mapFiltersFormElements.forEach((element) => {
-    element.removeAttribute('disabled', 'true');
+    element.removeAttribute('disabled');
   });
 
-  sliderElement.removeAttribute('disabled', true);
+  sliderElement.removeAttribute('disabled');
 
 };
 
@@ -68,10 +68,10 @@ const getFormUnabled = () => {
 
 noUiSlider.create(sliderElement, {
   range: {
-    min: 0,
+    min: TYPE_ELEMENTS_MINCOST_LIST[typeElement.value],
     max: 100000,
   },
-  start: 0,
+  start: TYPE_ELEMENTS_MINCOST_LIST[typeElement.value],
   step: 100,
   connect: 'lower',
   format: {
@@ -84,26 +84,27 @@ noUiSlider.create(sliderElement, {
   }
 });
 
-// Слайдер
-
 sliderElement.noUiSlider.on('update', () => {
   priceElement.value = sliderElement.noUiSlider.get();
 });
 
 typeElement.addEventListener('change', () => {
-  const typeSelectedElement = typeElement.querySelector('option:checked');
   sliderElement.noUiSlider.updateOptions({
     range: {
-      min: 0,
+      min: TYPE_ELEMENTS_MINCOST_LIST[typeElement.value],
       max: 100000,
     },
   });
-  sliderElement.noUiSlider.set(TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value]);
+  sliderElement.noUiSlider.set(TYPE_ELEMENTS_MINCOST_LIST[typeElement.value]);
 });
 
 priceElement.addEventListener('change', () => {
   sliderElement.noUiSlider.set(priceElement.value);
 });
+
+const resetSliderElement = () => {
+  sliderElement.noUiSlider.set(TYPE_ELEMENTS_MINCOST_LIST[typeElement.value]);
+};
 
 //  Валидация
 
@@ -124,19 +125,12 @@ pristine.addValidator(
   'Обязательное поле от 30 до 100 символов');
 
 typeElement.addEventListener('change', () => {
-  const typeSelectedElement = typeElement.querySelector('option:checked');
-  priceElement.placeholder = TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
+  priceElement.placeholder = TYPE_ELEMENTS_MINCOST_LIST[typeElement.value];
 });
 
-const validatePrice =  () => {
-  const typeSelectedElement = typeElement.querySelector('option:checked');
-  return priceElement.value >= TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value];
-};
+const validatePrice =  () => priceElement.value >= TYPE_ELEMENTS_MINCOST_LIST[typeElement.value];
 
-const getValidatePriceErrorMessage = () => {
-  const typeSelectedElement = typeElement.querySelector('option:checked');
-  return `Минимальная стоимость за выбранный тип проживания от ${TYPE_ELEMENTS_MINCOST_LIST[typeSelectedElement.value]}`;
-};
+const getValidatePriceErrorMessage = () => `Минимальная стоимость за выбранный тип проживания от ${TYPE_ELEMENTS_MINCOST_LIST[typeElement.value]}`;
 
 pristine.addValidator(
   form.querySelector('#price'),
@@ -205,6 +199,7 @@ form.addEventListener('submit', (evt) => {
 form.addEventListener('reset', ()=> {
   getPhotosCleared();
   mapFiltersForm.reset();
+  resetSliderElement();
   setTimeout(() => {
     setMapInitPosition();
     setFilter();

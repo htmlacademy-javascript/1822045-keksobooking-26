@@ -24,40 +24,34 @@ const renderSimilarCardsList = (similarCards) => {
 
     if (card.offer.photos) {
       cardElement.querySelector('.popup__photo').src = card.offer.photos[0];
+      const photoList = cardElement.querySelector('.popup__photos');
+      const photosFragment = document.createDocumentFragment();
+      const photoElement = cardElement.querySelector('.popup__photo');
+      photoElementContainer.remove('popup__photo');
 
-      if (card.offer.photos.length > 0) {
-        const photoList = cardElement.querySelector('.popup__photos');
-        const photosFragment = document.createDocumentFragment();
-        const photoElement = cardElement.querySelector('.popup__photo');
-        photoElementContainer.remove('popup__photo');
-
-        for (let i=1; i < card.offer.photos.length; i++) {
-          const photoElementCopy = photoElement.cloneNode(true);
-          photoElementCopy.src = card.offer.photos[i];
-          photosFragment.append(photoElementCopy);
-        }
-        photoList.append(photosFragment);
+      for (let i=1; i < card.offer.photos.length; i++) {
+        const photoElementCopy = photoElement.cloneNode(true);
+        photoElementCopy.src = card.offer.photos[i];
+        photosFragment.append(photoElementCopy);
       }
+      photoList.append(photosFragment);
     }
 
     if (card.offer.features) {
       cardElement.querySelector('.popup__feature').content = card.offer.features[0];
+      const featuresList = cardElement.querySelector('.popup__features');
+      const featureElement = cardElement.querySelector('.popup__feature');
+      const featuresFragment = document.createDocumentFragment();
+      featuresList.textContent = '';
 
-      if (card.offer.features.length > 0) {
-        const featuresList = cardElement.querySelector('.popup__features');
-        const featureElement = cardElement.querySelector('.popup__feature');
-        const featuresFragment = document.createDocumentFragment();
-        featuresList.textContent = '';
-
-        for (let i=1; i < card.offer.features.length; i++) {
-          const featureElementCopy = featureElement.cloneNode(true);
-          featureElementCopy.className = '';
-          const classType = 'popup__feature--';
-          featureElementCopy.classList.add('popup__feature', classType + card.offer.features[i]);
-          featuresFragment.append(featureElementCopy);
-        }
-        featuresList.append(featuresFragment);
+      for (let i=1; i < card.offer.features.length; i++) {
+        const featureElementCopy = featureElement.cloneNode(true);
+        featureElementCopy.className = '';
+        const classType = 'popup__feature--';
+        featureElementCopy.classList.add('popup__feature', classType + card.offer.features[i]);
+        featuresFragment.append(featureElementCopy);
       }
+      featuresList.append(featuresFragment);
     }
 
     if (card.offer.title === '') {
