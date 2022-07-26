@@ -52,11 +52,15 @@ const createRandomArray = (elements) => {
   return newArray;
 };
 
+// Сообщение об ошибке загрузки данных с сервера
+
 const showConnectErrorMessage = (message) => {
   const connectErrorMessage = document.querySelector('#connection-error').content.querySelector('.connection-error__message');
   connectErrorMessage.textContent = message;
   document.body.append(connectErrorMessage);
 };
+
+//  Сообщение об ошибке загрузки объявления
 
 const showFormErrorMessage = () => {
   const formErrorMessage = document.querySelector('#error').content;
@@ -82,22 +86,29 @@ const showFormErrorMessage = () => {
   document.body.append(formErrorMessage);
 };
 
-const showFormSuccessMessage = () => {
-  const formSuccessMessage = document.querySelector('#success').content;
+// Сообщение об успешной загрузке объявления
 
-  document.addEventListener('keydown', () => {
-    if (isEscapeKey) {
-      const formSuccessMessageContainer = document.querySelector('.success');
-      formSuccessMessageContainer.remove('success');
-    }
-  });
+const formSuccessMessage = document.querySelector('#success').content.querySelector('.success');
+const formSuccessMessageContainer = formSuccessMessage.cloneNode(true);
 
-  document.addEventListener('click', () => {
-    const formSuccessMessageContainer = document.querySelector('.success');
-    formSuccessMessageContainer.remove('success');
-  });
+const showFormSuccessMessage = () => document.body.append(formSuccessMessageContainer);
 
-  document.body.append(formSuccessMessage);
+const removeFormSuccessMessage = () => formSuccessMessageContainer.remove();
+
+document.addEventListener('click', removeFormSuccessMessage);
+
+document.addEventListener('keydown', () => {
+  if (isEscapeKey) {
+    removeFormSuccessMessage();
+  }
+});
+
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
 };
 
 export {generateArray};
@@ -108,4 +119,4 @@ export {createElement};
 export {showConnectErrorMessage};
 export {showFormErrorMessage};
 export {showFormSuccessMessage};
-
+export {debounce};
